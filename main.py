@@ -33,10 +33,11 @@ def main():
 
     # On my machine : python main.py -d fquad -e -sp valid -s 3188
     # runs in 17.29s and yields : Accuracy: 0.517, Accuracy@5: 0.738, Accuracy@20: 0.856
+    data_dir = "data/"
 
     if args.split != "merge":
         print("Loading the dataset")
-        data = load_json(args.dataset, args.split)
+        data = load_json(args.dataset, args.split, data_dir)
         print("Creating a context-question dataset")
         dataset, contexts = create_dataset(data)
         questions = [elt[1] for elt in dataset]
@@ -52,13 +53,13 @@ def main():
         contexts = contexts_train + contexts_dev
     print("There are {} questions and {} unique contexts in this dataset".format(len(questions), len(contexts)))
 
-    if not os.path.exists(args.dataset + ".p"):
+    idf_filename = data_dir + args.split + "_" + args.dataset + ".p"
+    if not os.path.exists(idf_filename):
         print("Computing an idf table")
         idf = build_idf(contexts)
-        pickle.dump(idf, open(args.split + "_" + args.dataset + ".p", "wb"))
-
+        pickle.dump(idf, open(idf_filename, "wb"))
     else:
-        idf = pickle.load(open(args.split + "_" + args.dataset + ".p", "rb"))
+        idf = pickle.load(open(idf_filename, "rb"))
 
     start = time.time()
 

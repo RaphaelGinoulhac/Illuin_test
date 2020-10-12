@@ -5,9 +5,12 @@ import json
 from urllib.request import urlretrieve
 
 
-def load_json(dataset, split, data_dir="data/"):
+def load_json(dataset, split, data_dir):
     # load the json file corresponding to the dataset and split chosen
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
     filename = split + "_" + dataset + ".json"
+
     if not os.path.exists(data_dir + filename):
         if filename in ["train_fquad.json", "valid_fquad.json"]:
             print("Downloading the dataset")
