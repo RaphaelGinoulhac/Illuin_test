@@ -1,9 +1,12 @@
 import gzip
 import numpy as np
-from pathlib import Path
-from urllib.request import urlretrieve
 import os
 import re
+from pathlib import Path
+from urllib.request import urlretrieve
+
+
+### unused, very poor performance
 
 
 def sentence2vec_predict(dataset, sentence2vec, idf, subset, k=10):
@@ -11,7 +14,18 @@ def sentence2vec_predict(dataset, sentence2vec, idf, subset, k=10):
     return predictions
 
 
-def download_word2vec(work_dir=""):
+def unused_main(contexts):
+    # Create a bag of words embedding for each context (from the Word2Vec embeddings), then find the most similar
+    # context when given a question (using the cosine similarity as a criterion)
+    fr_embeddings_path = get_word2vec()
+    word2vec = Word2Vec(fr_embeddings_path, vocab_size=250000)
+    sentence2vec = BagOfWords(word2vec, contexts)
+    idf = sentence2vec.build_idf(contexts)
+    sentence2vec.encode_sentences(idf)
+    return sentence2vec, idf
+
+
+def get_word2vec(work_dir=""):
     PATH_TO_DATA = Path(work_dir + 'data/')
     if not PATH_TO_DATA.exists():
         os.mkdir(PATH_TO_DATA)
@@ -24,7 +38,6 @@ def download_word2vec(work_dir=""):
 
 
 class Word2Vec():
-
     def __init__(self, filepath, vocab_size=50000):
         self.words, self.embeddings = self.load_wordvec(filepath, vocab_size)
         # Mappings for O(1) retrieval:
