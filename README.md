@@ -15,8 +15,8 @@ Arguments :
        
        
 ## Use cases
-python main.py -d fquad -sp valid -id 100 -k 20  
-               python main.py -d squad1 -sp merge -e -s 2500  
+Prediction on a given question : python main.py -d fquad -sp valid -id 100 -k 20  
+Evaluation on a subset of questions :               python main.py -d squad1 -sp merge -e -s 2500  
 
 On my machine : python main.py -d fquad -e -sp valid -s 3188  
 runs in 17.29s and yields : Accuracy: 0.517, Accuracy@5: 0.738, Accuracy@20: 0.856
